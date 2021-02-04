@@ -7,7 +7,7 @@ test:
   image: python:3.8.7-slim-buster
   before_script:
     - python -m pip install --upgrade pip
-    - pip install pytest
+    - pip install pytest certifi
     - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - python setup.py install
   script:
