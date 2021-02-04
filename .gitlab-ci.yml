@@ -4,7 +4,7 @@ stages:
 
 test:
   stage: test
-  image: python:3.8-alpine
+  image: python:3.8.7-slim-buster
   before_script:
     - python -m pip install --upgrade pip
     - pip install pytest
@@ -17,12 +17,13 @@ test:
   only:
     - external_pull_requests
     - tags
+    - master
 
 
 # Not executed, parent job definition
 .deploy-python-tool:
   stage: deploy
-  image: alpine:3.9.5
+  image: python:3.8.7-slim-buster
   environment:
     name: $ENVIRONMENT_NAME
   script:
@@ -43,6 +44,7 @@ deploy-python-tool-development:
     DEPLOY_POINT: CI_COMMIT_BRANCH
   only:
     - external_pull_requests
+    - master
 
 deploy-python-tool-production:
   extends: .deploy-python-tool
