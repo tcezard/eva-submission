@@ -11,6 +11,7 @@ test:
     - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - python setup.py install
     - openssl version -a
+    - cat /etc/pki/tls/openssl.cnf
   script:
     - PYTHONPATH=. pytest tests
   environment:
