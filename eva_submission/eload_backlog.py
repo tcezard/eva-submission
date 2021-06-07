@@ -68,6 +68,18 @@ class EloadBacklog(Eload):
         elif len(rows) > 1:
             raise ValueError(f'Multiple reference accession for {self.project_accession} found in metadata DB.')
         asm_accession, = rows[0]
+
+        with get_metadata_conn() as conn:
+            query = f"select distinct b.vcf_reference_accession " \
+                    f"from project_analysis a " \
+                    f"join analysis b on a.analysis_accession=b.analysis_accession " \
+                    f"where a.project_accession='{self.project_accession}' and b.hidden_in_eva=0;"
+            rows = get_all_results_for_query(conn, query)
+        if len(rows) < 1:
+            raise ValueError(f'No reference accession for {self.project_accession} found in metadata DB.')
+        elif len(rows) > 1:
+            raise ValueError(f'Multiple reference accession for {self.project_accession} found in metadata DB.')
+        asm_accession, = rows[0]
         self.eload_cfg.set('submission', 'assembly_accession', value=asm_accession)
         fasta_path, report_path = get_reference_fasta_and_report(sci_name, asm_accession)
         self.eload_cfg.set('submission', 'assembly_fasta', value=fasta_path)
@@ -100,7 +112,8 @@ class EloadBacklog(Eload):
                     f"from project_analysis a " \
                     f"join analysis_file b on a.analysis_accession=b.analysis_accession " \
                     f"join file c on b.file_id=c.file_id " \
-                    f"where a.project_accession='{self.project_accession}' and a.hidden_in_eva=0" \
+                    f"join analysis d on a.analysis_accession=d.analysis_accession " \
+                    f"where a.project_accession='{self.project_accession}' and d.hidden_in_eva=0" \
                     f"group by a.analysis_accession;"
             rows = get_all_results_for_query(conn, query)
         if len(rows) == 0:
