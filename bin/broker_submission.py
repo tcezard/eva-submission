@@ -66,10 +66,14 @@ def main():
     # Optionally Set the valid VCF and metadata file
     with EloadBrokering(args.eload, args.vcf_files, args.metadata_file) as brokering:
         brokering.upgrade_config_if_needed()
-        if not args.report:
-            brokering.broker(brokering_tasks_to_force=args.force, existing_project=args.project_accession,
-                             async_upload=args.use_async_upload, dry_ena_upload=args.dry_ena_upload)
-        brokering.report()
+        if brokering.is_validation_complete():
+            if not args.report:
+                brokering.broker(brokering_tasks_to_force=args.force, existing_project=args.project_accession,
+                                 async_upload=args.use_async_upload, dry_ena_upload=args.dry_ena_upload)
+            brokering.report()
+        else:
+            logger.error('Validation is not complete. all validation check should be passed or forced.'
+                         'Check the validation report')
 
 
 if __name__ == "__main__":

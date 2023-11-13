@@ -32,6 +32,12 @@ class EloadBrokering(Eload):
             if metadata_file:
                 self.eload_cfg.set('validation', 'valid', 'metadata_spreadsheet', value=os.path.abspath(metadata_file))
 
+    def is_validation_complete(self):
+        return all((
+            self.eload_cfg.query('validation', 'valid', 'metadata_spreadsheet'),
+            self.eload_cfg.query('validation', 'valid', 'vcf_files'),
+            self.eload_cfg.query('validation', 'valid', 'analyses')
+        ))
     def broker(self, brokering_tasks_to_force=None, existing_project=None, async_upload=False, dry_ena_upload=False):
         """Run the brokering process"""
         self.eload_cfg.set('brokering', 'brokering_date', value=self.now)
