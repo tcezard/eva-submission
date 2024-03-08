@@ -127,7 +127,7 @@ workflow {
             sort_and_compress_vcf(accession_vcf.out.accession_done)
             csi_vcfs = sort_and_compress_vcf.out.compressed_vcf
             accessioned_files_to_rm = accession_vcf.out.accessioned_filenames
-            all_accession_complete = sort_and_compress_vcf.out.compressed_vcf
+            all_accession_complete = sort_and_compress_vcf.out.compressed_vcf.collect()
         }
         csi_index_vcf(csi_vcfs)
         copy_to_ftp(csi_index_vcf.out.csi_indexed_vcf.toList(), accessioned_files_to_rm.toList())
