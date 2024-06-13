@@ -258,6 +258,7 @@ class EloadValidation(Eload):
         with open(validation_config_file, 'w') as open_file:
             yaml.safe_dump(validation_config, open_file)
         validation_script = os.path.join(NEXTFLOW_DIR, 'validation.nf')
+        nextflow_run_name = f'validation_ELOAD_{self.eload_num}'
         try:
             command_utils.run_command_with_output(
                 'Nextflow Validation process',
@@ -265,6 +266,7 @@ class EloadValidation(Eload):
                     'export NXF_OPTS="-Xms1g -Xmx8g"; ',
                     cfg['executable']['nextflow'], validation_script,
                     '-params-file', validation_config_file,
+                    '-name', nextflow_run_name,
                     '-work-dir', output_dir,
                     get_nextflow_config_flag()
                 ))
