@@ -174,7 +174,7 @@ class EloadBrokering(Eload):
         with open(brokering_config_file, 'w') as open_file:
             yaml.safe_dump(brokering_config, open_file)
         brokering_script = os.path.join(NEXTFLOW_DIR, 'prepare_brokering.nf')
-        nextflow_run_name = f'brokering_prep_ELOAD_{self.eload_num}'
+        nextflow_run_name = f'brokering_prep_{self.eload}'
         try:
             command_utils.run_command_with_output(
                 'Nextflow brokering preparation process',

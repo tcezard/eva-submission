@@ -258,7 +258,7 @@ class EloadValidation(Eload):
         with open(validation_config_file, 'w') as open_file:
             yaml.safe_dump(validation_config, open_file)
         validation_script = os.path.join(NEXTFLOW_DIR, 'validation.nf')
-        nextflow_run_name = f'validation_ELOAD_{self.eload_num}'
+        nextflow_run_name = f'validation_{self.eload}'
         try:
             command_utils.run_command_with_output(
                 'Nextflow Validation process',

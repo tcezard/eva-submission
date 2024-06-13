@@ -588,8 +588,10 @@ class TestEloadIngestion(TestCase):
         for task in task_completed:
             assert self.eload.eload_cfg.query('ingestion', workflow_name, 'nextflow_dir', task) == '<complete>'
         nextflow_script = os.path.join(NEXTFLOW_DIR, f'{workflow_name}.nf')
+        run_name = f'{workflow_name}_{self.eload.eload}'
         command = (f'export NXF_OPTS="-Xms1g -Xmx8g";  '
                    f'/path/to/nextflow {nextflow_script} -params-file {self.eload.project_dir}/workflow_params.yaml '
+                   f'-name {run_name} '
                    f'-work-dir {work_dir} ')
         command += '-resume ' if resume else ' '
         m_run_command.assert_called_once_with('Nextflow workflow process', command)

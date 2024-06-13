@@ -100,13 +100,13 @@ class TestEloadBrokering(TestCase):
         temp_dir = 'temporary_directory'
         nf_script = os.path.join(NEXTFLOW_DIR, 'prepare_brokering.nf')
         config_file = os.path.join(self.eload.eload_dir, 'brokering_config_file.yaml')
-
+        run_name = f'brokering_prep_{self.eload.eload}'
         with patch('eva_submission.eload_brokering.command_utils.run_command_with_output') as m_execute, \
                 patch.object(Eload, 'create_nextflow_temp_output_directory', return_value=temp_dir):
             self.eload._run_brokering_prep_workflow()
         m_execute.assert_called_once_with(
             'Nextflow brokering preparation process',
-            f'path_to_nextflow {nf_script} -params-file {config_file} -work-dir {temp_dir} '
+            f'path_to_nextflow {nf_script} -params-file {config_file} -name {run_name} -work-dir {temp_dir} '
         )
 
     def test_parse_bcftools_norm_report(self):

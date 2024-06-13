@@ -664,7 +664,7 @@ class EloadIngestion(Eload):
         with open(params_file, 'w') as open_file:
             yaml.safe_dump(params, open_file)
         nextflow_script = os.path.join(NEXTFLOW_DIR, f'{workflow_name}.nf')
-        nextflow_run_name = f'{workflow_name}_ELOAD_{self.eload_num}'
+        nextflow_run_name = f'{workflow_name}_{self.eload}'
         try:
             command_utils.run_command_with_output(
                 f'Nextflow {workflow_name} process',
