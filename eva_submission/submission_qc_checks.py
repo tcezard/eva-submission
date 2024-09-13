@@ -43,12 +43,12 @@ job_launched_and_completed_text_map = {
         {'Job: [FlowJob: [name=calculate-statistics-job]] completed'}
     ),
     'variant-stats': (
-        {'Job: [FlowJob: [name=variant-stats-job]] launched'},
-        {'Job: [FlowJob: [name=variant-stats-job]] completed'}
+        {'Job: [SimpleJob: [name=variant-stats-job]] launched'},
+        {'Job: [SimpleJob: [name=variant-stats-job]] completed'}
     ),
     'study-stats': (
-        {'Job: [FlowJob: [name=study-stats-job]] launched'},
-        {'Job: [FlowJob: [name=study-stats-job]] completed'}
+        {'Job: [SimpleJob: [name=study-stats-job]] launched'},
+        {'Job: [SimpleJob: [name=study-stats-job]] completed'}
     ),
     'acc_import': (
         {'Job: [SimpleJob: [name=accession-import-job]] launched'},
@@ -114,6 +114,8 @@ class EloadQC(Eload):
         self.private_config_xml_file = cfg['maven']['settings_file']
         self.project_accession = self.eload_cfg.query('brokering', 'ena', 'PROJECT')
         self.path_to_data_dir = Path(cfg['projects_dir'], self.project_accession)
+        if not os.path.exists(self.path_to_data_dir):
+            self.path_to_data_dir = self.eload_dir
         self.path_to_logs_dir = os.path.join(self.path_to_data_dir, '00_logs')
         self.taxonomy = self.eload_cfg.query('submission', 'taxonomy_id')
         self.analyses = self.eload_cfg.query('brokering', 'analyses')
@@ -404,33 +406,37 @@ class EloadQC(Eload):
         for analysis_alias, analysis_accession in self.eload_cfg.query('brokering', 'ena', 'ANALYSIS').items():
             logs_to_check = []
             jobs_to_check = []
-            for file_name in self.analysis_to_file_names[analysis_accession]:
-                logs_to_check.append(f"pipeline.*{file_name}*.log")
-                jobs_to_check.append("variant_load")
-            logs_to_check.extend([
-                f"statistics.*{analysis_accession}*.log",
-                f"variant.statistics.{analysis_accession}.log"
-            ])
-            jobs_to_check.extend(["calculate_statistics", "variant-stats"])
-            analysis_pass, last_error = self._check_multiple_logs(analysis_accession, logs_to_check, jobs_to_check)
-            if not analysis_pass:
-                failed_analysis[analysis_accession] = last_error
+            # statistic calculation only happens if aggregation is None
+            if self.eload_cfg.query('ingestion', 'aggregation', analysis_accession) == 'none':
+                for file_name in self.analysis_to_file_names[analysis_accession]:
+                    logs_to_check.append(f"pipeline.*{file_name}*.log")
+                    jobs_to_check.append("variant_load")
+                logs_to_check.extend([
+                    f"statistics.*{analysis_accession}*.log",
+                    f"variant.statistics.{analysis_accession}.log"
+                ])
+                jobs_to_check.extend(["calculate_statistics", "variant-stats"])
+                analysis_pass, last_error = self._check_multiple_logs(analysis_accession, logs_to_check, jobs_to_check)
+                if not analysis_pass:
+                    failed_analysis[analysis_accession] = last_error
         return self._report_for_log(failed_analysis)
 
-    def study_statistic_check_report(self):
+    def check_if_study_statistic_completed_successfully(self):
         failed_analysis = {}
         for analysis_alias, analysis_accession in self.eload_cfg.query('brokering', 'ena', 'ANALYSIS').items():
             logs_to_check = []
             jobs_to_check = []
-            for file_name in self.analysis_to_file_names[analysis_accession]:
-                logs_to_check.append(f"pipeline.*{file_name}*.log")
-                jobs_to_check.append("variant_load")
-            logs_to_check.extend(
-                [f"statistics.*{analysis_accession}*.log", f"study.statistics.{analysis_accession}.log"])
-            jobs_to_check.extend(["calculate_statistics", "study-stats"])
-            analysis_pass, last_error = self._check_multiple_logs(analysis_accession, logs_to_check, jobs_to_check)
-            if not analysis_pass:
-                failed_analysis[analysis_accession] = last_error
+            # statistic calculation only happens if aggregation is None
+            if self.eload_cfg.query('ingestion', 'aggregation', analysis_accession) == 'none':
+                for file_name in self.analysis_to_file_names[analysis_accession]:
+                    logs_to_check.append(f"pipeline.*{file_name}*.log")
+                    jobs_to_check.append("variant_load")
+                logs_to_check.extend(
+                    [f"statistics.*{analysis_accession}*.log", f"study.statistics.{analysis_accession}.log"])
+                jobs_to_check.extend(["calculate_statistics", "study-stats"])
+                analysis_pass, last_error = self._check_multiple_logs(analysis_accession, logs_to_check, jobs_to_check)
+                if not analysis_pass:
+                    failed_analysis[analysis_accession] = last_error
         return self._report_for_log(failed_analysis)
 
     def check_if_variants_were_skipped_while_accessioning(self):
@@ -578,7 +584,7 @@ class EloadQC(Eload):
         variant_load_result, variant_load_report = self.check_if_variant_load_completed_successfully()
         annotation_result, annotation_report = self.check_if_vep_completed_successfully()
         variant_statistic_result, variant_statistic_report = self.check_if_variant_statistic_completed_successfully()
-        study_statistic_result, study_statistic_report = self.check_if_variant_statistic_completed_successfully()
+        study_statistic_result, study_statistic_report = self.check_if_study_statistic_completed_successfully()
         acc_import_result, acc_import_report = self.check_if_acc_load_completed_successfully()
 
         clustering_check_result, clustering_check_report = self.clustering_check_report()

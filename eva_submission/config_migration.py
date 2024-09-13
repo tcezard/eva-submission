@@ -18,6 +18,9 @@ def upgrade_version_1_15_to_1_16(eload_cfg, eload_dir):
     if not project_dir:
         # This ELOAD never went through ingestion so there is no need to change anything
         return
+    if project_dir == eload_dir:
+        # Already migrated so no need to do it again
+        return
 
     for sub_dir_or_file in os.listdir(project_dir):
         source = os.path.join(project_dir, sub_dir_or_file)

@@ -184,7 +184,7 @@ class TestSubmissionQC(TestCase):
         Study Statistics check: 
             Success: FAIL
             Errors:
-                ERZ2499196 - variant-stats error : No variant-stats log file found for ERZ2499196
+                ERZ2499196 - study-stats error : No study-stats log file found for ERZ2499196
         ----------------------------------
         Accession Import check: 
             Success: FAIL
@@ -271,7 +271,7 @@ class TestSubmissionQC(TestCase):
         Study Statistics check: 
             Success: FAIL
             Errors:
-                ERZ2499196 - variant-stats error : No variant-stats log file found for ERZ2499196
+                ERZ2499196 - study-stats error : No study-stats log file found for ERZ2499196
         ----------------------------------
         Accession Import check: 
             Success: FAIL
@@ -435,7 +435,7 @@ class TestSubmissionQC(TestCase):
         Study Statistics check: 
             Success: FAIL
             Errors:
-                ERZ2499196 - variant-stats error : No variant-stats log file found for ERZ2499196
+                ERZ2499196 - study-stats error : No study-stats log file found for ERZ2499196
         ----------------------------------
         Accession Import check: 
             Success: FAIL

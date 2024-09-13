@@ -559,8 +559,9 @@ class EloadValidation(Eload):
                 f"{self.eload_cfg.query('validation', 'naming_convention_check', 'naming_convention')}"
             )
             for vcf_file in vcf_files_2_naming_conv:
-                reports.append(f"    * {vcf_file}: {vcf_files_2_naming_conv[vcf_file]['naming_convention']}")
-                if not vcf_files_2_naming_conv[vcf_file]['naming_convention']:
+                if vcf_files_2_naming_conv[vcf_file]['naming_convention']:
+                    reports.append(f"    * {vcf_file}: {vcf_files_2_naming_conv[vcf_file]['naming_convention']}")
+                else:
                     reports.append(f"    * {vcf_file}: {vcf_files_2_naming_conv[vcf_file]['naming_convention_map']}")
         return '\n'.join(reports)
 
