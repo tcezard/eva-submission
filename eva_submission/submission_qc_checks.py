@@ -47,8 +47,8 @@ job_launched_and_completed_text_map = {
         {'Job: [SimpleJob: [name=variant-stats-job]] completed'}
     ),
     'study-stats': (
-        {'Job: [SimpleJob: [name=study-stats-job]] launched'},
-        {'Job: [SimpleJob: [name=study-stats-job]] completed'}
+        {'Job: [SimpleJob: [name=file-stats-job]] launched'},
+        {'Job: [SimpleJob: [name=file-stats-job]] completed'}
     ),
     'acc_import': (
         {'Job: [SimpleJob: [name=accession-import-job]] launched'},
