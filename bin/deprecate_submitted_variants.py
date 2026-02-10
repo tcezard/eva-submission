@@ -30,7 +30,7 @@ def create_properties(maven_profile, private_settings_file, assembly_accession=N
     properties_generator = SpringPropertiesGenerator(maven_profile, private_settings_file)
     return properties_generator._format(
         properties_generator._common_accessioning_clustering_properties(
-            assembly_accession=assembly_accession, read_preference='secondaryPreferred', chunk_size=chunk_size
+            assembly_accession=assembly_accession, read_preference='primary', chunk_size=chunk_size
         ),
         {
             'spring.batch.job.names': 'DEPRECATE_SUBMITTED_VARIANTS_FROM_FILE_JOB',
