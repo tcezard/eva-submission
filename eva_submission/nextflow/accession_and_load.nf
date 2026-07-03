@@ -217,11 +217,11 @@ process normalise_vcf {
  */
 process accession_vcf {
     label 'long_time', 'default_mem'
-
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/${log_filename}.log".toString(),
-          "-e ${params.logs_dir}/${log_filename}.err".toString()
+          "-e ${params.logs_dir}/${log_filename}.log".toString(),
+          "-o ${params.logs_dir}/${log_filename}.err".toString()
         ]
     }
 
@@ -256,11 +256,11 @@ process accession_vcf {
 
 process qc_accession_vcf {
     label 'long_time', 'big_mem'
-
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/${log_filename}.log".toString(),
-          "-e ${params.logs_dir}/${log_filename}.err".toString()
+          "-e ${params.logs_dir}/${log_filename}.log".toString(),
+          "-o ${params.logs_dir}/${log_filename}.err".toString()
         ]
     }
 
@@ -315,10 +315,11 @@ process qc_accession_vcf {
 process qc_duplicate_ss_acc {
     label 'long_time', 'med_mem'
 
+// FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/${log_filename}.log".toString(),
-          "-e ${params.logs_dir}/${log_filename}.err".toString()
+          "-e ${params.logs_dir}/${log_filename}.log".toString(),
+          "-o ${params.logs_dir}/${log_filename}.err".toString()
         ]
     }
 
@@ -410,10 +411,11 @@ process csi_index_vcf {
 process load_variants_vcf {
     label 'long_time', 'med_mem'
 
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/load_variants.${vcf_filename}.log".toString(),
-          "-e ${params.logs_dir}/load_variants.${vcf_filename}.err".toString()
+          "-e ${params.logs_dir}/load_variants.${vcf_filename}.log".toString(),
+          "-o ${params.logs_dir}/load_variants.${vcf_filename}.err".toString()
         ]
     }
 
@@ -444,10 +446,11 @@ process load_variants_vcf {
 process run_vep_on_variants {
     label 'long_time', 'med_mem'
 
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/annotation.${analysis_accession}.log".toString(),
-          "-e ${params.logs_dir}/annotation.${analysis_accession}.err".toString()
+          "-e ${params.logs_dir}/annotation.${analysis_accession}.log".toString(),
+          "-o ${params.logs_dir}/annotation.${analysis_accession}.err".toString()
         ]
     }
 
@@ -489,10 +492,11 @@ process run_vep_on_variants {
 process calculate_variant_statistics_vcf {
     label 'long_time', 'med_mem'
 
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/variant.statistics.${analysis_accession}.log".toString(),
-          "-e ${params.logs_dir}/variant.statistics.${analysis_accession}.err".toString()
+          "-e ${params.logs_dir}/variant.statistics.${analysis_accession}.log".toString(),
+          "-o ${params.logs_dir}/variant.statistics.${analysis_accession}.err".toString()
         ]
     }
 
@@ -530,10 +534,11 @@ process calculate_variant_statistics_vcf {
 process calculate_study_statistics_vcf {
     label 'long_time', 'med_mem'
 
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/study.statistics.${analysis_accession}.log".toString(),
-          "-e ${params.logs_dir}/study.statistics.${analysis_accession}.err".toString()
+          "-e ${params.logs_dir}/study.statistics.${analysis_accession}.log".toString(),
+          "-o ${params.logs_dir}/study.statistics.${analysis_accession}.err".toString()
         ]
     }
 
@@ -570,11 +575,12 @@ process calculate_study_statistics_vcf {
 process import_accession {
     label 'default_time', 'med_mem'
 
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         log_filename = vcf_file.getFileName().toString()
         return [
-          "-o ${params.logs_dir}/acc_import.${log_filename}.log".toString(),
-          "-e ${params.logs_dir}/acc_import.${log_filename}.err".toString()
+          "-e ${params.logs_dir}/acc_import.${log_filename}.log".toString(),
+          "-o ${params.logs_dir}/acc_import.${log_filename}.err".toString()
         ]
     }
 

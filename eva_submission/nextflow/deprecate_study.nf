@@ -56,10 +56,11 @@ workflow {
 process deprecate_submitted_variants {
     label 'long_time', 'med_mem'
 
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/${log_filename}.log".toString(),
-          "-e ${params.logs_dir}/${log_filename}.err".toString()
+          "-e ${params.logs_dir}/${log_filename}.log".toString(),
+          "-o ${params.logs_dir}/${log_filename}.err".toString()
         ]
     }
 
@@ -87,10 +88,11 @@ process deprecate_submitted_variants {
 process drop_study {
     label 'long_time', 'med_mem'
 
+    // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
-          "-o ${params.logs_dir}/${log_filename}.log".toString(),
-          "-e ${params.logs_dir}/${log_filename}.err".toString()
+          "-e ${params.logs_dir}/${log_filename}.log".toString(),
+          "-o ${params.logs_dir}/${log_filename}.err".toString()
         ]
     }
 
