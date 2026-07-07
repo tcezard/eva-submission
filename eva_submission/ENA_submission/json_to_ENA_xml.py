@@ -160,7 +160,7 @@ class EnaJson2XmlConverter(EnaJsonConverter):
 
         # Add run accessions
         if 'runAccessions' in analysis_data and analysis_data.get('runAccessions'):
-            for run in analysis_data.get('runAccessions').split(','):
+            for run in analysis_data.get('runAccessions'):
                 add_element(analysis_elemt, 'RUN_REF', accession=run)
 
         # Add analysis type
