@@ -8,7 +8,7 @@ logger = logging_config.get_logger(__name__)
 job_launched_and_completed_text_map = {
     'accession': (
         {'Job: [SimpleJob: [name=CREATE_SUBSNP_ACCESSION_JOB]] launched',
-         'Job: [SimpleJob: [name=SUBSNP_ACCESSION_JOB]] launched'},
+         'Job: [SimpleJob: [name=SUBSNP_ACCESSION_JOB]] launched',},
         {'Job: [SimpleJob: [name=CREATE_SUBSNP_ACCESSION_JOB]] completed',
          'Job: [SimpleJob: [name=SUBSNP_ACCESSION_JOB]] completed'}
     ),
@@ -74,7 +74,10 @@ def did_job_complete_successfully_from_log(file_path, job_type):
             if any(text in line for text in job_launched_str):
                 job_status = ""
             if any(text in line for text in job_completed_str):
-                job_status = line.split(" ")[-1].replace("[", "").replace("]", "").strip()
+                if '[COMPLETED]' in line:
+                    job_status = 'COMPLETED'
+                elif '[FAILED]' in line:
+                    job_status = 'FAILED'
         if job_status == 'COMPLETED':
             return True
         elif job_status == 'FAILED':
