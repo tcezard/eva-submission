@@ -648,7 +648,7 @@ class EloadIngestion(Eload):
                 self.warning(f'Work directory for {workflow_name} not found, will start from scratch.')
                 work_dir = None
         if not resume or not work_dir:
-            work_dir = self.create_nextflow_temp_output_directory(base=self.project_dir)
+            work_dir = self.create_nextflow_temp_output_directory()
             for task in tasks:
                 self.eload_cfg.set(self.config_section, workflow_name, 'nextflow_dir', task, value=work_dir)
         # Set the tasks for nextflow to perform

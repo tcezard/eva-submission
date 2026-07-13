@@ -39,6 +39,7 @@ class Eload(AppLogger):
         self.eload_num = eload_number
         self.eload = f'ELOAD_{eload_number}'
         self.eload_dir = os.path.abspath(os.path.join(cfg['eloads_dir'], self.eload))
+        self.nobackup_eload_dir = os.path.abspath(os.path.join(cfg['nobackup_eloads_dir'], self.eload))
         self.config_path = os.path.join(self.eload_dir, '.' + self.eload + '_config.yml')
         if config_object:
             self.eload_cfg = config_object
@@ -46,6 +47,7 @@ class Eload(AppLogger):
             self.eload_cfg = EloadConfig(self.config_path)
 
         os.makedirs(self.eload_dir, exist_ok=True)
+        os.makedirs(self.nobackup_eload_dir, exist_ok=True)
         for k in directory_structure:
             os.makedirs(self._get_dir(k), exist_ok=True)
         self.create_log_file()
@@ -63,9 +65,8 @@ class Eload(AppLogger):
     def create_nextflow_temp_output_directory(self, base=None):
         random_string = ''.join(random.choice(string.ascii_letters) for i in range(6))
         if base is None:
-            output_dir = os.path.join(self.eload_dir, 'nextflow_output_' + random_string)
-        else:
-            output_dir = os.path.join(base, 'nextflow_output_' + random_string)
+            base = self.nobackup_eload_dir
+        output_dir = os.path.join(base, 'nextflow_output_' + random_string)
         os.makedirs(output_dir)
         return output_dir
 
