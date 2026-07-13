@@ -1,6 +1,7 @@
 ftp_dir: 'tests/resources/ftpboxes'
 public_ftp_dir: '/path/to/public/ftp'
 eloads_dir: 'tests/resources/eloads'
+nobackup_eloads_dir: 'tests/resources/nobackup_eloads'
 projects_dir: 'tests/resources/projects'
 eva_pipeline_props: '/path/to/pipeline/properties'
 vep_path: 'tests/resources/vep'

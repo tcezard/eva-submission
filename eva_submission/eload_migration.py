@@ -26,9 +26,7 @@ class EloadMigration(Eload):
         }
         if project_accession:
             migrate_params['project_accession'] = project_accession
-        # Kept on eloads_dir (not nobackup_eloads_dir): this pipeline copies files between old and new eloads_dir/
-        # projects_dir locations, so its work dir needs to stay on the same storage as those directories.
-        work_dir = self.create_nextflow_temp_output_directory(base=self.eload_dir)
+        work_dir = self.create_nextflow_temp_output_directory()
         params_file = os.path.join(self.eload_dir, 'migrate_params.yaml')
         # Use a specific log file so we don't overwrite when we sync
         log_file = os.path.join(self.eload_dir, 'migrate_nextflow.log')

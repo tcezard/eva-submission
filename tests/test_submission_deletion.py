@@ -51,6 +51,7 @@ class TestEloadDeletion(TestCase):
             os.remove(config_file_path)
 
         data = {"eloads_dir": os.path.join(self.sub_del_test_dir, "eloads"),
+                "nobackup_eloads_dir": os.path.join(self.sub_del_test_dir, "nobackup_eloads"),
                 "projects_dir": os.path.join(self.sub_del_test_dir, "projects"),
                 "ftp_dir": os.path.join(self.sub_del_test_dir, "ftp"),
                 "eloads_lts_dir": os.path.join(self.sub_del_test_dir, "lts")}

@@ -36,6 +36,9 @@ class TestEloadBrokering(TestCase):
         eloads = glob.glob(os.path.join(self.resources_folder, 'eloads', 'ELOAD_3'))
         for eload in eloads:
             shutil.rmtree(eload)
+        nobackup_eloads = glob.glob(os.path.join(self.resources_folder, 'nobackup_eloads', 'ELOAD_3'))
+        for nobackup_eload in nobackup_eloads:
+            shutil.rmtree(nobackup_eload)
 
     def test_upload_to_bioSamples(self):
         self.eload.eload_cfg.set('validation', 'valid', 'metadata_spreadsheet',

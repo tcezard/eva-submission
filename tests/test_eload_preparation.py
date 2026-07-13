@@ -35,6 +35,9 @@ class TestEloadPreparation(TestCase):
         eloads = glob.glob(os.path.join(self.resources_folder, 'eloads', 'ELOAD_1'))
         for eload in eloads:
             shutil.rmtree(eload)
+        nobackup_eloads = glob.glob(os.path.join(self.resources_folder, 'nobackup_eloads', 'ELOAD_1'))
+        for nobackup_eload in nobackup_eloads:
+            shutil.rmtree(nobackup_eload)
         genomes = glob.glob(os.path.join(self.resources_folder, 'genomes'))
         for genome in genomes:
             shutil.rmtree(genome)
