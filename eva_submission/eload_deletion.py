@@ -43,6 +43,7 @@ class EloadDeletion(Eload):
         if self.project_dir:
             self.delete_project_dir(self.project_dir)
         self.delete_eload_dir(self.eload_dir)
+        self.delete_eload_dir(self.nobackup_eload_dir)
 
     def is_compressed(self, file_name):
         compressed_exts = (".gz", ".xz", ".bz2", ".zip", ".rar", ".7z")
