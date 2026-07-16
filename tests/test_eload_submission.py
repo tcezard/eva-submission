@@ -1,5 +1,4 @@
 import os
-import shutil
 from copy import deepcopy
 from unittest import TestCase
 from unittest.mock import patch
