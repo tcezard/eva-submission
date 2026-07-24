@@ -415,9 +415,16 @@ class SampleJSONSubmitter(SampleSubmitter):
     def _convert_metadata(self):
         for sample in self.metadata_json.get('sample'):
             # If Biosample object is present then we are creating or updating a sample.
-            # If not then just return the name and accession.
+            # If not then just return the name and accession, unless we are deriving
             if BIOSAMPLE_OBJECT_PROP not in sample:
-                yield None, sample.get(SAMPLE_IN_VCF_PROP), sample.get(BIOSAMPLE_ACCESSION_PROP)
+                if 'derive' in self.submitter.submit_type and BIOSAMPLE_ACCESSION_PROP in sample:
+                    yield (
+                        {CHARACTERISTICS_PROP: {}, ACCESSION_PROP: sample[BIOSAMPLE_ACCESSION_PROP]},
+                        sample.get(SAMPLE_IN_VCF_PROP),
+                        sample.get(BIOSAMPLE_ACCESSION_PROP)
+                    )
+                else:
+                    yield None, sample.get(SAMPLE_IN_VCF_PROP), sample.get(BIOSAMPLE_ACCESSION_PROP)
                 continue
             # FIXME: handle BioSample JSON that uses old representation correctly
             if any(
