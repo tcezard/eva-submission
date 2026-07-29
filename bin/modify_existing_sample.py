@@ -49,6 +49,10 @@ class XlsxExistingSampleParser(XlsxParser):
 
             if bio_sample_acc in json_value and json_value[bio_sample_acc]:
                 sample_data.update(bioSampleAccession=json_value[bio_sample_acc])
+            if analysis_alias in json_value:
+                json_value.pop(analysis_alias)
+            if sample_name_in_vcf in json_value:
+                json_value.pop(sample_name_in_vcf)
             biosample_obj = self.get_biosample_object(json_value)
             sample_data.update(bioSampleObject=biosample_obj)
             sample_json[json_key].append(sample_data)
