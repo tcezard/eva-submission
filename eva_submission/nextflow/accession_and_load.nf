@@ -256,6 +256,8 @@ process accession_vcf {
 
 process qc_accession_vcf {
     label 'long_time', 'big_mem'
+
+    maxForks 10
     // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
@@ -315,6 +317,7 @@ process qc_accession_vcf {
 process qc_duplicate_ss_acc {
     label 'long_time', 'med_mem'
 
+    maxForks 10
 // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
@@ -411,6 +414,7 @@ process csi_index_vcf {
 process load_variants_vcf {
     label 'long_time', 'med_mem'
 
+    maxForks 10
     // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
@@ -446,6 +450,7 @@ process load_variants_vcf {
 process run_vep_on_variants {
     label 'long_time', 'med_mem'
 
+    maxForks 10
     // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
@@ -480,6 +485,7 @@ process run_vep_on_variants {
     pipeline_parameters += " --app.vep.cache.species=" + vep_species.toString()
 
     """
+    trap 'if [[ \$? == 1 ]]; then exit 0; fi' EXIT
     java -Xmx${Math.max(1, task.memory.toGiga()-1)}G -jar $params.jar.eva_pipeline --spring.config.location=file:$params.load_job_props --parameters.path=$params.load_job_props $pipeline_parameters
     """
 }
@@ -492,6 +498,7 @@ process run_vep_on_variants {
 process calculate_variant_statistics_vcf {
     label 'long_time', 'med_mem'
 
+    maxForks 10
     // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
@@ -534,6 +541,7 @@ process calculate_variant_statistics_vcf {
 process calculate_study_statistics_vcf {
     label 'long_time', 'med_mem'
 
+    maxForks 10
     // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         return [
@@ -575,6 +583,7 @@ process calculate_study_statistics_vcf {
 process import_accession {
     label 'default_time', 'med_mem'
 
+    maxForks 10
     // FIXME: The stderr and stdout are being swapped by nextflow. Revert when fixed in nextflow
     clusterOptions {
         log_filename = vcf_file.getFileName().toString()
